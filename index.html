@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width">
+
+  <title>
+    ChisTec
+  </title>
+
+  <meta name="theme-color" content="#fffbfe">
+  <link rel="icon" sizes="32x32" href="favicon.ico">
+  <link rel="manifest" href="site.webmanifest">
+
+  <link rel="stylesheet" href="css/estilos.css">
+  <script src="ungap/custom-elements.js">
+  </script>
+  <script type="module" src="js/configura.js"></script>
+
+</head>
+
+<body>
+
+  <form id="form" novalidate onsubmit="procesa(event)">
+
+    <md-top-app-bar adicional="tab" headline="headline">
+      <h1>ChisTec</h1>
+    </md-top-app-bar>
+    <nav-tab-fixed id="tab"></nav-tab-fixed>
+
+    <main>
+
+      <p class="md-filled-text-field">
+        <md-select-menu id="selectIntegrante" required aria-labelledby="etiquetaIntegrante"
+          options="opcionesDeIntegrante" oninput="copiaMensajes()">
+        </md-select-menu>
+        <span id="etiquetaIntegrante" accesskey="G">
+          Integrante del equipo*
+        </span>
+        <small id="supportingGenero">
+          * Obligatorio
+        </small>
+      </p>
+
+      <p>
+        <button class="md-filled-button" style="width: 100%;">
+          Mostrar Chiste
+        </button>
+      </p>
+
+    </main>
+
+    <md-options-menu id="opcionesDeIntegrante" aria-label="Opciones de integrantes">
+
+      <span data-value="" title="Selecciona un integrante">
+      </span>
+
+      <span data-value="mari">
+        🌱 Barrera Cortes Marisol
+      </span>
+
+      <span data-value="yani">
+        🌱 Martinez Basilio Yanitzin
+      </span>
+
+      <span data-value="carmen">
+        🌱 Muñoz Amador Carmen Juana
+      </span>
+
+      <span data-value="mich">
+        🌾 Palomino Gómez Michelle Zoé
+      </span>
+
+      <span data-value="johan">
+        🌾 Tufiño González Johan Yael
+      </span>
+    </md-options-menu>
+
+    <nav-drw id="nav"></nav-drw>
+
+  </form>
+
+  <script type="module">
+    import {
+      muestraError
+    } from "./lib/js/muestraError.js"
+    import {
+      muestraTextoDeAyuda
+    } from "./lib/js/muestraTextoDeAyuda.js"
+
+    function copiaMensajes() {
+      muestraTextoDeAyuda(
+        selectIntegrante, supportingGenero,
+        "* Obligatorio")
+    }
+    window["copiaMensajes"] =
+      copiaMensajes
+
+    /**
+     * @param {SubmitEvent} evt
+     */
+    function procesa(evt) {
+      evt.preventDefault()
+      try {
+        copiaMensajes()
+        if (
+          selectIntegrante.validity.valid) {
+          const integrante =
+            selectIntegrante.value
+          const resultado =
+            recomienda(integrante)
+          alert(resultado)
+        }
+      } catch (e) {
+        muestraError(e)
+      }
+    }
+    window["procesa"] = procesa
+
+    /** @param {string} integrante */
+    function recomienda(integrante) {
+      if (integrante === "mari") {
+        return "¿Por qué los programadores prefieren el oscuro? " +
+          "Porque la luz atrae a los bugs."
+      } else if (integrante === "yani") {
+        return "¿Por qué el informático nunca juega a las escondidas? " +
+          "Porque siempre se encuentra con un “404: No encontrado”."
+      } else if (integrante === "carmen") {
+        return "Un programador se ahoga y llama a su amigo: “¡Ayuda! ¡No sé nadar!” " +
+          "Y el amigo responde: “¿Has probado reiniciar?”."
+      } else if (integrante === "mich") {
+        return "¿Por qué los informáticos no pueden jugar a escondidas? " +
+          "Porque siempre se quedan en debug."
+      } else if (integrante === "johan") {
+        return "¿Qué hace una abeja en el gimnasio? " +
+          "¡Zum-ba!."
+      }
+    }
+  </script>
+
+</body>
+
+</html>
